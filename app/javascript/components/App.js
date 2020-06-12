@@ -1,5 +1,5 @@
 import React from 'react'
-import AnotherComponent from "./AnotherComponent";
+import InputSection from "./InputSection";
 
 class App extends React.Component{
 
@@ -13,10 +13,7 @@ class App extends React.Component{
     render() {
         return (
             <div>
-                <div>This is working and reloading foo sjkl</div>
-                <AnotherComponent string={this.state.string}/>
-                <AnotherComponent string={"pissface"}/>
-                <AnotherComponent/>
+                <InputSection/>
             </div>
         )
     }
