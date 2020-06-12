@@ -15,9 +15,6 @@ class InputSection extends React.Component{
     }
 
     handleChange = (event, value) => {
-        console.log("process.env.REACT_APP_LAST_FM_API_KEY within handle change")
-        console.log(process.env.REACT_APP_LAST_FM_API_KEY)
-        console.log(this.foo)
         if (event && event.type === "click") {return}
         if (value){
             this.setState({ name: value });
@@ -26,8 +23,6 @@ class InputSection extends React.Component{
     };
 
     sendLastFmQuery = query => {
-        console.log("process.env.LAST_FM_API_KEY")
-        console.log(process.env.REACT_APP_LAST_FM_API_KEY)
         fetch(`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${query}&api_key=${process.env.REACT_APP_LAST_FM_API_KEY}&format=json`)
             .then(res => res.json())
             .then(res => {
@@ -39,10 +34,13 @@ class InputSection extends React.Component{
     fullName = (song) => {return (`${song.name} - ${song.artist}`)}
 
     handleLastFmResult = (response) => {
-        const tracks = response.results.trackmatches.track.map(tm => {
-            return {"name": tm.name, "artist": tm.artist, "mbid" : tm.mbid}
-        })
-        this.setState({searchResults: tracks})
+        if (!response.error)
+        {
+            const tracks = response.results.trackmatches.track.map(tm => {
+                return {"name": tm.name, "artist": tm.artist, "mbid" : tm.mbid}
+            })
+            this.setState({searchResults: tracks})
+        }
     }
 
     lastFmThumbnail = (song) => { return(
@@ -53,7 +51,6 @@ class InputSection extends React.Component{
                 return img["#text"]
             })
             .catch(err => console.log(err))
-      //  return `https://lastfm.freetls.fastly.net/i/u/64s/d4df5bf6ddc9809e08a277527af6d80d.png`
     )}
 
     delayedLastFmQuery = _.debounce(q => this.sendLastFmQuery(q), 500);
@@ -64,11 +61,8 @@ class InputSection extends React.Component{
     }
 
     handleSubmit = async (event, value) => {
-        console.log("process.env.REACT_APP_LAST_FM_API_KEY within handle submit")
-        console.log(process.env.REACT_APP_LAST_FM_API_KEY)
         if (!value) {return}
         event.preventDefault()
-        debugger;
         value.thumbnail = await this.lastFmThumbnail(value)
         var newNames = this.state.selectedSongs.concat(value)
         this.setState({selectedSongs: newNames})
