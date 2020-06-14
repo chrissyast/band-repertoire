@@ -2,7 +2,7 @@
     console.log(`querying ${query}`)
     return (
 
-        fetch(`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${query}&api_key=${process.env.REACT_APP_LAST_FM_API_KEY}&format=json`)
+        fetch(`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${query}&api_key=49a8bce547b22eee100c6788b8d45269&format=json`)
             .then(res => res.json())
             .then(res => {
                return handleLastFmResult(res)
