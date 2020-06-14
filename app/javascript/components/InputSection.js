@@ -28,21 +28,17 @@ class InputSection extends React.Component{
 
     handleChange = async (event, value) => {
         if (event && event.type === "click") {return}
-        if (value){
-            console.log(value)
+        if (value) {
             this.setState({ name: value });
-            var foo = await this.delayedLastFmQuery(value)
-           if (foo) {
-            this.setState({searchResults : foo})
-           }
+            const self = this
+            this.delayedLastFmQuery(value, self)
         }
     };
 
     fullName = (song) => {return (`${song.name} - ${song.artist}`)}
 
-    delayedLastFmQuery = _.debounce(async function (q) {
-       var delayedResponse = await sendLastFmQuery(q)
-        return delayedResponse
+    delayedLastFmQuery = _.debounce(function (q, self) {
+       sendLastFmQuery(q, self)
     }, 500);
 
     filter(q) {
