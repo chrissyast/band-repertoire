@@ -1,4 +1,4 @@
-import React, {useRef, useCallback} from 'react'
+import React from 'react'
 import _ from 'lodash'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -41,16 +41,11 @@ class InputSection extends React.Component{
        sendLastFmQuery(q, self)
     }, 500);
 
-    filter(q) {
-        const results = this.state.foo.filter(f => this.fullName(f).toLowerCase().indexOf((q).toLowerCase()) != -1)
-        this.setState({searchResults: results})
-    }
-
     handleSubmit = async (event, value) => {
         if (!value) {return}
         event.preventDefault()
         value.thumbnail = await lastFmThumbnail(value)
-        var newNames = this.state.selectedSongs.concat(value)
+        const newNames = this.state.selectedSongs.concat(value);
         this.setState({selectedSongs: newNames})
         this.setState({name: ''})
         this.setState({searchResults: []})
