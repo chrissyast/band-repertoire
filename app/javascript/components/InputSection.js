@@ -39,10 +39,6 @@ class InputSection extends React.Component{
         this.setState({searchResults: []})
     };
 
-    handleSubmitRep = () => {
-        console.log(this.state)
-    }
-
     render() {
         return (
             <div>
