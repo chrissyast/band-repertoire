@@ -2,19 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { styled } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import {sendLastFmQuery, lastFmThumbnail} from "../../api/lastfm";
-
-const MyButton = styled(Button)({
-  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-  border: 0,
-  borderRadius: 3,
-  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-  color: 'white',
-  height: 48,
-  padding: '0 30px',
-});
 
 class InputSection extends React.Component{
     constructor(props) {
@@ -74,7 +62,6 @@ class InputSection extends React.Component{
                        {song.name} - {song.artist} <img src={song.thumbnail}/>
                     </h1>
                 ))}
-            <MyButton onClick={this.handleSubmitRep}>Styled Components</MyButton>
             </div>
 
         )
