@@ -33,6 +33,8 @@ module Api
       errors = []
       adds.each do |add|
         begin
+          #song = Song.create_or_find_by!(title: song.title, artist: song.artist)
+          #song.initialise(add) unless song
           song = Song.create_or_find_by!(title: song.title, artist: song.artist)
           song.initialise(add) unless song
           song.save
@@ -43,6 +45,11 @@ module Api
         end
       end
 
+      deletions.each do |del|
+        ##song = Song.where()
+        puts del
+        binding.pry
+      end
       ## TODO deletions
 
       if errors.empty?
