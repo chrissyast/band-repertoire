@@ -35,8 +35,8 @@ module Api
         begin
           #song = Song.create_or_find_by!(title: song.title, artist: song.artist)
           #song.initialise(add) unless song
-          song = Song.create_or_find_by!(title: song.title, artist: song.artist)
-          song.initialise(add) unless song
+          song = Song.new
+          song.initialise(add)
           song.save
         rescue StandardError => e
           puts 'this is the error'
@@ -48,7 +48,6 @@ module Api
       deletions.each do |del|
         ##song = Song.where()
         puts del
-        binding.pry
       end
       ## TODO deletions
 

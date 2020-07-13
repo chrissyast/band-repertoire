@@ -1,6 +1,5 @@
 class Song < ApplicationRecord
 
-  belongs_to :repertoire
   belongs_to :artist
 
   TASK_EXCLUDED_PARAMS = ["mbid","thumbnail"]
