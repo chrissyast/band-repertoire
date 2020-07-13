@@ -2,7 +2,8 @@ import React from 'react'
 import _ from 'lodash'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {sendLastFmQuery, lastFmThumbnail} from "../../api/lastfm";
+import {sendLastFmQuery, lastFmThumbnail} from "../api/lastfm";
+import {saveRepertoire} from "../api/internal"
 
 class InputSection extends React.Component{
     constructor(props) {
@@ -10,7 +11,8 @@ class InputSection extends React.Component{
         this.state = {
             name: '',
             selectedSongs: [],
-            searchResults: []
+            searchResults: [],
+            unsavedChanges: {add: [], delete: []}
         }
     }
 
@@ -34,10 +36,35 @@ class InputSection extends React.Component{
         event.preventDefault()
         value.thumbnail = await lastFmThumbnail(value)
         const newNames = this.state.selectedSongs.concat(value);
+        const unsavedChanges = Object.assign({}, this.state.unsavedChanges);
+        unsavedChanges.add = unsavedChanges.add.concat(value)
+        this.setState({unsavedChanges : unsavedChanges })
         this.setState({selectedSongs: newNames})
         this.setState({name: ''})
         this.setState({searchResults: []})
     };
+
+    delete = (index) => {
+        const deleted = this.state.selectedSongs[index]
+        const unsavedChanges = Object.assign({}, this.state.unsavedChanges);
+        const songList = Object.assign([], this.state.selectedSongs)
+        songList.splice(index, 1)
+        if (this.state.unsavedChanges.add.includes(deleted)) {
+            unsavedChanges.add.splice(unsavedChanges.add.indexOf(deleted),1)
+        }
+        else {
+            unsavedChanges.delete = unsavedChanges.delete.concat(deleted);
+        }
+        this.setState({selectedSongs: songList})
+        this.setState({unsavedChanges: unsavedChanges})
+    }
+
+    save = async () => {
+        const saveOutcome = await saveRepertoire(this.state.unsavedChanges, this)
+        if (saveOutcome.success) {
+            this.setState({unsavedChanges : {add: [], delete: []}})
+        }
+    }
 
     render() {
         return (
@@ -53,11 +80,16 @@ class InputSection extends React.Component{
                     onChange={this.handleSubmit}
                 />
                 {this.state.selectedSongs.map((song, index) => (
-
+                <div>
                     <h1>
                        {song.name} - {song.artist} <img src={song.thumbnail}/>
                     </h1>
+                    <button onClick={() => this.delete(index)}>delete</button>
+                </div>
                 ))}
+            <button onClick={this.save}>
+                Save changes
+            </button>
             </div>
 
         )
