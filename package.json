@@ -32,7 +32,6 @@
   },
   "scripts": {
     "dev": "webpack --config webpack.config.js",
-    "dev2": "node webpack.config.js",
-    "server": "node server.js"
+    "dev2": "node webpack.config.js"
   }
 }
