@@ -5,7 +5,7 @@ export function saveRepertoire(changes) {
         body: JSON.stringify(changes),
         withCredentials: false
     };
-    const host = process.env.NODE_SERVER || 'http://localhost:3001'
+    const host = process.env.NODE_SERVER || 'http://localhost:4000'
     return (
         // todo change host for production
         fetch(`${host}/api/repertoire/save`, requestOptions)
